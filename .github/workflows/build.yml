@@ -23,8 +23,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/FrontEnd:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/FrontEnd:v${{ github.run_number }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/frontend:v${{ github.run_number }}
 
   deploy:
     needs: build-and-push
@@ -37,7 +37,7 @@ jobs:
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/FrontEnd:latest
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
             docker stop frontend-cont || true
             docker rm frontend-cont || true
-            docker run -d --name frontend-cont -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/FrontEnd:latest
+            docker run -d --name frontend-cont -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
